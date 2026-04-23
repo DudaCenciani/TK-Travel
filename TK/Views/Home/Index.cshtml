@@ -1,0 +1,615 @@
+﻿@* Define que a View recebe uma lista de objetos "Promocao" vinda do Controller *@
+@model List<Promocao>
+
+@* Define o título que aparece na aba do navegador *@
+@{
+    ViewData["Title"] = "Home";
+}
+
+@* Importa o Bootstrap 5 via CDN para usar os componentes e grid responsivo *@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    /* Estilo da seção hero (banner principal): fundo azul escuro em degradê */
+    .hero {
+        background: linear-gradient(135deg, #1E2A4A, #2A3F6A);
+        color: white;
+        padding: 80px 0;
+    }
+
+    /* Botão amarelo arredondado padrão da marca */
+    .btn-yellow {
+        background-color: #FDB813;
+        color: #1E2A4A;
+        font-weight: bold;
+        border-radius: 50px;
+        padding: 12px 25px;
+    }
+
+        /* Cor do botão amarelo ao passar o mouse */
+        .btn-yellow:hover {
+            background-color: #e6a800;
+        }
+
+    /* Define altura fixa para imagens dos cards de promoção */
+    .card-promo img {
+        height: 200px;
+        object-fit: cover; /* Faz a imagem cobrir o espaço sem distorcer */
+    }
+
+    /* Efeito de zoom leve no card ao passar o mouse */
+    .card-promo:hover {
+        transform: scale(1.03);
+        transition: 0.3s;
+    }
+
+    /* Título de seção na cor azul escuro em negrito */
+    .section-title {
+        color: #1E2A4A;
+        font-weight: bold;
+    }
+
+    /* Botão flutuante de chat fixo no canto inferior direito */
+    .chat-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #FDB813;
+        color: #1E2A4A;
+        border-radius: 50%;
+        padding: 15px;
+        font-size: 20px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    /* Card azul escuro em degradê usado na seção "Sobre" */
+    .info-card {
+        background: linear-gradient(135deg, #1E2A4A, #2A3F6A);
+        color: white;
+        border-radius: 15px;
+        transition: 0.3s;
+        height: 100%;
+    }
+
+        /* Título dentro do info-card em negrito com espaço abaixo */
+        .info-card h4 {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Efeito de elevação do info-card ao passar o mouse */
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+    /* Repetição do estilo hero (garante que não seja sobrescrito) */
+    .hero {
+        background: linear-gradient(135deg, #1E2A4A, #2A3F6A);
+        color: white;
+        padding: 80px 0;
+    }
+
+    /* Flex container que alinha texto e imagem lado a lado na hero */
+    .hero-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+    }
+
+    /* Limita a largura do bloco de texto da hero */
+    .hero-text {
+        max-width: 600px;
+    }
+
+        /* Tamanho e peso do título principal da hero */
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        /* Espaçamento e tamanho do parágrafo da hero */
+        .hero-text p {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+    /* Palavra em destaque amarelo dentro do título */
+    .highlight {
+        color: #FDB813;
+    }
+
+    /* Define largura da imagem da mascote na hero */
+    .hero-img img {
+        width: 280px;
+    }
+
+    /* Estilo do botão amarelo dentro da hero (com margin-top e sem borda) */
+    .btn-yellow {
+        background-color: #FDB813;
+        color: #1E2A4A;
+        font-weight: bold;
+        border-radius: 50px;
+        padding: 12px 25px;
+        margin-top: 20px;
+        border: none;
+    }
+
+        /* Cor do botão amarelo ao passar o mouse */
+        .btn-yellow:hover {
+            background-color: #e6a800;
+        }
+
+    /* CSS responsivo: em telas menores que 768px (celular), empilha o conteúdo verticalmente */
+    @@media (max-width: 768px) {
+        .hero-content {
+            flex-direction: column; /* Empilha texto e imagem um embaixo do outro */
+            text-align: center;
+        }
+        /* Reduz a imagem da mascote em telas menores */
+        .hero-img img {
+            width: 200px;
+        }
+    }
+</style>
+
+<!-- SEÇÃO HERO: Banner principal da página -->
+<section class="hero">
+    <div class="container hero-content">
+
+        <!-- Bloco de texto à esquerda com título, descrição e botão -->
+        <div class="hero-text">
+            <h1>
+                Explore o Mundo com a <span class="highlight">TK Travel</span>
+            </h1>
+
+            <p>
+                Transformamos seus sonhos em experiências inesquecíveis.
+                Pacotes personalizados, destinos incríveis e atendimento de excelência.
+            </p>
+
+            <!-- Botão que chama a função JavaScript abrirChat() ao ser clicado -->
+            <button class="btn-yellow" onclick="abrirChat()">
+                💬 Fale com a gente
+            </button>
+        </div>
+
+        <!-- Imagem da mascote Teka exibida à direita do texto -->
+        <div class="hero-img">
+            <img src="~/imagens/teka.png" alt="Teka" />
+        </div>
+
+    </div>
+</section>
+
+<!-- SEÇÃO SOBRE: Apresenta os diferenciais da empresa -->
+<section id="sobre" class="py-5 bg-white text-center">
+    <div class="container">
+        <h2 class="section-title mb-3">Sobre a TK Travel</h2>
+        <p class="text-muted">Mais de 10 anos criando experiências únicas</p>
+
+        <!-- Linha com 3 cards de diferenciais usando o grid do Bootstrap -->
+        <div class="row mt-5">
+
+            <!-- Card 1: Destinos -->
+            <div class="col-md-4 mb-4">
+                <div class="info-card text-center p-4">
+                    <h4>✈️ Destinos Incríveis</h4>
+                    <p>Oferecemos os melhores destinos nacionais e internacionais com pacotes exclusivos.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Atendimento -->
+            <div class="col-md-4 mb-4">
+                <div class="info-card text-center p-4">
+                    <h4>👨‍👩‍👧 Atendimento Personalizado</h4>
+                    <p>Nossa equipe especializada cria roteiros sob medida para você e sua família.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Preços -->
+            <div class="col-md-4 mb-4">
+                <div class="info-card text-center p-4">
+                    <h4>🏆 Melhores Preços</h4>
+                    <p>Garantimos as melhores condições de pagamento e preços competitivos do mercado.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEÇÃO MISSÃO: Box centralizado com o texto da missão da empresa -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="missao-box text-center p-4">
+            <h3 class="fw-bold mb-3">Nossa Missão</h3>
+
+            <p>
+                Proporcionar experiências de viagem inesquecíveis, conectando pessoas a novos destinos e culturas
+                com segurança, conforto e excelência no atendimento. Na TK Travel, cada viagem é única e especial!
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- SEÇÃO PROMOÇÕES: Cards gerados dinamicamente a partir da lista do Model -->
+<section id="promocoes" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title text-center mb-4">Promoções Imperdíveis</h2>
+
+        <div class="row">
+            @* Loop Razor: percorre cada promoção da lista e gera um card para cada uma *@
+            @foreach (var promo in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card card-promo shadow">
+                        @* Exibe a imagem da promoção usando a URL salva no banco *@
+                        <img src="@promo.ImagemUrl" class="card-img-top" />
+
+                        <div class="card-body">
+                            @* Exibe o título da promoção *@
+                            <h5 class="card-title">@promo.Titulo</h5>
+                            @* Exibe a descrição da promoção *@
+                            <p>@promo.Descricao</p>
+
+                            @* Botão que chama interesse() passando o título da promoção como argumento *@
+                            <button class="btn btn-yellow w-100"
+                                    onclick="interesse('@promo.Titulo')">
+                                Tenho Interesse
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- SEÇÃO CONTATO: Exibe telefone, email e localização da empresa -->
+<section id="contato" class="py-5 text-center">
+    <div class="container">
+        <h2 class="section-title">Entre em Contato</h2>
+
+        <!-- Três colunas com as informações de contato -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <p><strong>Telefone</strong></p>
+                <p>(11) 99999-9999</p>
+            </div>
+
+            <div class="col-md-4">
+                <p><strong>Email</strong></p>
+                <p>contato@tktravel.com</p>
+            </div>
+
+            <div class="col-md-4">
+                <p><strong>Localização</strong></p>
+                <p>São Paulo - SP</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Botão flutuante de chat fixo no canto inferior direito da tela -->
+<div class="chat-button">
+    💬
+</div>
+
+<script>
+    // Função chamada ao clicar em "Tenho Interesse" nos cards de promoção
+    function interesse(promocao) {
+        // Exibe um alerta simples informando qual promoção foi selecionada
+        alert("Interesse na promoção: " + promocao);
+    }
+</script>
+
+<!-- Botão flutuante amarelo que abre o chat ao ser clicado -->
+<button class="btn btn-warning" onclick="abrirChat()">
+    💬 Fale com a gente
+</button>
+
+<!-- MODAL DO CHAT: Janela flutuante que contém toda a interface do chatbot -->
+<div id="chatModal" class="chat-modal">
+    <div class="chat-box">
+
+        <!-- Cabeçalho do chat com avatar, nome da assistente e botão de fechar -->
+        <div class="chat-header">
+            <div class="header-left">
+                <img src="~/imagens/teka.png" class="avatar" /> <!-- Avatar da Teka -->
+                <span>Teka - Assistente</span>
+            </div>
+            <!-- Botão X que chama fecharChat() para ocultar o modal -->
+            <button onclick="fecharChat()">X</button>
+        </div>
+
+        <!-- Área onde as mensagens do bot e do usuário são exibidas -->
+        <div id="chatMessages" class="chat-messages"></div>
+
+        <!-- Área de input: campo de texto e botão para enviar a mensagem -->
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Digite..." />
+            <button onclick="enviarMensagem()">Enviar</button>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* Janela do chat: posição fixa no canto inferior direito, oculta por padrão */
+    .chat-modal {
+        display: none; /* Fica invisível até abrirChat() ser chamado */
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 350px;
+        height: 500px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        z-index: 999; /* Fica na frente de todos os outros elementos */
+    }
+
+    /* Cabeçalho azul escuro do chat com nome e botão de fechar */
+    .chat-header {
+        background: #1E2A4A;
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Foto redonda da Teka no cabeçalho */
+    .avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+    }
+
+    /* Área de mensagens com scroll vertical quando o conteúdo ultrapassa a altura */
+    .chat-messages {
+        height: 340px;
+        overflow-y: auto; /* Barra de rolagem aparece quando necessário */
+        padding: 10px;
+        background: #f5f5f5;
+    }
+
+    /* Container do input e botão na parte inferior do chat */
+    .chat-input {
+        display: flex;
+        border-top: 1px solid #ddd;
+    }
+
+        /* Campo de texto ocupa todo o espaço disponível */
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+        }
+
+        /* Botão de enviar com fundo amarelo */
+        .chat-input button {
+            background: #FDB813;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+    /* Balão de mensagem do bot: cinza claro, alinhado à esquerda */
+    .bot {
+        background: #eee;
+        padding: 8px;
+        margin: 5px;
+        border-radius: 10px;
+        max-width: 80%;
+    }
+
+    /* Balão de mensagem do usuário: amarelo, alinhado à direita */
+    .user {
+        background: #FDB813;
+        padding: 8px;
+        margin: 5px;
+        border-radius: 10px;
+        text-align: right;
+        margin-left: auto; /* Empurra o balão para a direita */
+        max-width: 80%;
+    }
+
+    /* Flex container para alinhar avatar e nome lado a lado no header */
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Avatar redondo com corte de imagem para preencher o círculo */
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+</style>
+
+<script>
+
+    // Controla em qual pergunta o chat está (começa na pergunta 0)
+    let step = 0;
+
+    // Objeto que armazena todas as respostas coletadas do usuário
+    let dados = {
+        nome: "",
+        pessoas: "",
+        telefone: "",
+        destino: "",
+        origem: "",
+        dataIda: "",
+        dataVolta: ""
+    };
+
+    // Array com as perguntas do roteiro do chatbot, em ordem
+    const perguntas = [
+        "Olá! Eu sou a Teka 😊 Qual é o seu nome?",      // step 0
+        "Quantas pessoas vão viajar?",                     // step 1
+        "Qual seu telefone?",                              // step 2
+        "Para qual destino você quer ir?",                 // step 3
+        "De onde você vai sair?",                          // step 4
+        "Escolha a data de ida:",                          // step 5
+        "Agora a data de volta:"                           // step 6
+    ];
+
+    // Abre o modal do chat e envia a primeira mensagem se for a primeira vez
+    function abrirChat() {
+        document.getElementById("chatModal").style.display = "block"; // Torna o modal visível
+
+        if (step === 0) {
+            // Só exibe a saudação inicial se o chat ainda não foi iniciado
+            adicionarMensagem("bot", perguntas[0]);
+        }
+    }
+
+    // Oculta o modal do chat
+    function fecharChat() {
+        document.getElementById("chatModal").style.display = "none";
+    }
+
+    // Cria e adiciona um balão de mensagem na área de chat
+    function adicionarMensagem(tipo, texto) {
+        let div = document.createElement("div"); // Cria um novo elemento <div>
+        div.className = tipo;                     // Define a classe "bot" ou "user" para estilização
+        div.innerText = texto;                    // Define o texto exibido no balão
+
+        document.getElementById("chatMessages").appendChild(div); // Adiciona o balão na área de mensagens
+
+        // Rola automaticamente para a mensagem mais recente
+        let container = document.getElementById("chatMessages");
+        container.scrollTop = container.scrollHeight;
+    }
+
+    // Lê o texto digitado, exibe como mensagem do usuário e processa a resposta
+    function enviarMensagem() {
+        let input = document.getElementById("userInput"); // Referência ao campo de texto
+        let texto = input.value;                          // Lê o valor digitado
+
+        if (!texto) return; // Ignora se o campo estiver vazio
+
+        adicionarMensagem("user", texto); // Exibe a mensagem do usuário no chat
+        input.value = "";                 // Limpa o campo de texto após o envio
+
+        processarResposta(texto); // Passa o texto para a lógica de processamento
+    }
+
+    // Processa a resposta do usuário: salva os dados ou chama a IA se necessário
+    function processarResposta(resposta) {
+
+        // Se o usuário mencionar palavras relacionadas a preço, desvia para a IA
+        if (
+            resposta.toLowerCase().includes("preço") ||
+            resposta.toLowerCase().includes("valor") ||
+            resposta.toLowerCase().includes("pacote")
+        ) {
+            chamarIA(resposta); // Envia a mensagem para o backend com IA
+            return;             // Interrompe o fluxo normal do roteiro
+        }
+
+        // Salva a resposta do usuário no campo correspondente ao step atual
+        switch (step) {
+            case 0: dados.nome = resposta; break;      // Salva o nome
+            case 1: dados.pessoas = resposta; break;   // Salva a quantidade de pessoas
+            case 2: dados.telefone = resposta; break;  // Salva o telefone
+            case 3: dados.destino = resposta; break;   // Salva o destino
+            case 4: dados.origem = resposta; break;    // Salva a cidade de origem
+            case 5: dados.dataIda = resposta; break;   // Salva a data de ida
+            case 6: dados.dataVolta = resposta; break; // Salva a data de volta
+        }
+
+        step++; // Avança para a próxima pergunta do roteiro
+
+        // Referência ao campo de input para mudar o tipo quando necessário
+        let input = document.getElementById("userInput");
+
+        // Nos steps 5 e 6 (datas), muda o input para um seletor de calendário
+        if (step === 5 || step === 6) {
+            input.type = "date"; // Exibe um calendário para o usuário escolher a data
+        } else {
+            input.type = "text"; // Volta ao campo de texto normal
+        }
+
+        // Se ainda houver perguntas no roteiro, exibe a próxima
+        if (step < perguntas.length) {
+            adicionarMensagem("bot", perguntas[step]);
+        } else {
+            // Todas as perguntas foram respondidas: finaliza o atendimento
+            finalizar();
+        }
+    }
+
+    // Envia a mensagem do usuário para o backend e exibe a resposta da IA
+    function chamarIA(mensagem) {
+
+        // Faz uma requisição POST para o endpoint /Chat/ResponderIA no servidor
+        fetch("/Chat/ResponderIA", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },          // Informa que o corpo é JSON
+            body: JSON.stringify({ mensagem: mensagem })               // Envia a mensagem serializada
+        })
+        .then(r => r.json())       // Converte a resposta do servidor de JSON para objeto JS
+        .then(data => {
+
+            adicionarMensagem("bot", data.resposta); // Exibe a resposta da IA no chat
+
+            // Após 1 segundo, retoma o roteiro de perguntas normalmente
+            setTimeout(() => {
+                adicionarMensagem("bot", "Mas vamos continuar rapidinho 😊");
+                adicionarMensagem("bot", perguntas[step]); // Exibe a pergunta atual do roteiro
+            }, 1000);
+        });
+    }
+
+    // Finaliza o atendimento: monta a mensagem, abre o WhatsApp e reseta o chat
+    function finalizar() {
+
+        adicionarMensagem("bot", "Perfeito! Já vou enviar suas informações ✈️");
+
+        // Monta a mensagem formatada com todos os dados coletados durante o chat
+        let mensagem = `Olá! Meu nome é ${dados.nome}
+    Quero viajar para ${dados.destino}
+    Saindo de ${dados.origem}
+    Ida: ${dados.dataIda}
+    Volta: ${dados.dataVolta}
+    Pessoas: ${dados.pessoas}
+    Telefone: ${dados.telefone}`;
+
+        // Número de WhatsApp da empresa no formato internacional (sem + e sem espaços)
+        let numero = "5511998093791";
+
+        // Gera o link do WhatsApp com a mensagem pré-preenchida e codificada para URL
+        let url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+
+        // Aguarda 1 segundo e abre o WhatsApp em uma nova aba do navegador
+        setTimeout(() => {
+            window.open(url, "_blank");
+        }, 1000);
+
+        // Reseta o step para 0 para que o chat possa ser usado novamente do início
+        step = 0;
+
+        // Limpa todos os dados coletados anteriormente
+        dados = {
+            nome: "",
+            pessoas: "",
+            telefone: "",
+            destino: "",
+            origem: "",
+            dataIda: "",
+            dataVolta: ""
+        };
+
+        // Garante que o input volta a ser do tipo texto após uso como calendário
+        document.getElementById("userInput").type = "text";
+    }
+
+</script>

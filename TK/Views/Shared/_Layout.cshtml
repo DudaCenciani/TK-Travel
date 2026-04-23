@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    @* Define que a página se adapta a diferentes tamanhos de tela (responsividade) *@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @* Título dinâmico da aba do navegador, vindo do ViewData de cada página *@
+    <title>@ViewData["Title"] - TK</title>
+    @* Importa o CSS do Bootstrap local para estilização dos componentes *@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* Importa o CSS personalizado do site (site.css) *@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* Importa o CSS gerado automaticamente pelo projeto Razor (TK.styles.css) *@
+    <link rel="stylesheet" href="~/TK.styles.css" asp-append-version="true" />
+</head>
+<body>
+    @* Cabeçalho fixo com logo, nome da empresa e menu de navegação *@
+    <header class="navbar-custom">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- LADO ESQUERDO: logo + nome da empresa e slogan -->
+            <div class="d-flex align-items-center">
+                @* Logo da empresa *@
+                <img src="~/imagens/logo.png" class="logo" />
+                <div class="ms-2">
+                    @* Nome da empresa em branco e negrito *@
+                    <h5 class="mb-0 text-white fw-bold">TK Travel</h5>
+                    @* Slogan em amarelo abaixo do nome *@
+                    <small class="text-warning">
+                        Sua viagem dos sonhos começa aqui ✈️
+                    </small>
+                </div>
+            </div>
+            <!-- LADO DIREITO: links de navegação do menu -->
+            <nav class="menu">
+                @* Link para a página inicial *@
+                <a href="/" class="nav-link-custom">Início</a>
+                @* Link âncora que rola a página até a seção "sobre" *@
+                <a href="#sobre" class="nav-link-custom">Sobre Nós</a>
+                @* Link âncora que rola a página até a seção "promocoes" *@
+                <a href="#promocoes" class="nav-link-custom">Promoções</a>
+                @* Link âncora que rola a página até a seção "contato" *@
+                <a href="#contato" class="nav-link-custom">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    @* Container principal que envolve o conteúdo de cada página *@
+    <div class="container">
+        @* Tag main: área onde o conteúdo de cada View é renderizado *@
+        <main role="main" class="pb-3">
+            @* RenderBody() injeta aqui o conteúdo da View correspondente à rota acessada *@
+            @RenderBody()
+        </main>
+    </div>
+
+    @* Seção de informações de contato exibida no rodapé superior *@
+    <section id="contato" class="footer-info py-5 text-center">
+        <div class="container">
+            <div class="row">
+                @* Coluna com os telefones da empresa *@
+                <div class="col-md-4">
+                    <h5>📞 Telefone</h5>
+                    <p>(11) 9999-9999</p>
+                    <p>(11) 3333-3333</p>
+                </div>
+                @* Coluna com os e-mails da empresa *@
+                <div class="col-md-4">
+                    <h5>📧 E-mail</h5>
+                    <p>contato@tktravel.com.br</p>
+                    <p>vendas@tktravel.com.br</p>
+                </div>
+                @* Coluna com a localização da empresa *@
+                <div class="col-md-4">
+                    <h5>📍 Localização</h5>
+                    <p>São Paulo - SP</p>
+                    <p>Brasil</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @* Rodapé final com logo, copyright e slogan *@
+    <footer class="footer-custom text-center">
+        <div class="container">
+            @* Logo menor exibida no rodapé *@
+            <img src="~/imagens/logo.png" class="logo-footer mb-2" />
+            @* Texto de copyright em branco *@
+            <p class="text-white mb-1">
+                © 2026 TK Travel - Todos os direitos reservados
+            </p>
+            @* Slogan em amarelo no rodapé *@
+            <p class="text-warning">
+                Sua viagem dos sonhos começa aqui ✈️
+            </p>
+        </div>
+    </footer>
+
+    @* Importa o jQuery necessário para alguns componentes do Bootstrap funcionarem *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @* Importa o JavaScript do Bootstrap (inclui modais, dropdowns, etc.) *@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* Importa o JavaScript personalizado do site *@
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @* Renderiza scripts adicionais definidos em Views específicas (opcional) *@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
