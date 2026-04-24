@@ -31,11 +31,7 @@
             background-color: #e6a800;
         }
 
-    /* Define altura fixa para imagens dos cards de promoção */
-    .card-promo img {
-        height: 200px;
-        object-fit: cover; /* Faz a imagem cobrir o espaço sem distorcer */
-    }
+    
 
     /* Efeito de zoom leve no card ao passar o mouse */
     .card-promo:hover {
@@ -141,6 +137,133 @@
             background-color: #e6a800;
         }
 
+    .card-promo-overlay {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        max-width: 340px;
+        margin: 0 auto;
+        cursor: pointer;
+        aspect-ratio: 3/4;
+        background: #111;
+    }
+
+        .card-promo-overlay img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .card-promo-overlay:hover img {
+            transform: scale(1.05);
+        }
+
+    .card-overlay-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px 16px 16px;
+        background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 60%, transparent 100%);
+        color: white;
+    }
+
+        .card-overlay-content h5 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+    .badges-row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+    .badge-pill {
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+        border: 1px solid rgba(255,255,255,0.35);
+        color: white;
+        background: rgba(255,255,255,0.12);
+    }
+
+        .badge-pill.voo {
+            border-color: #93c5fd;
+            color: #bfdbfe;
+        }
+
+        .badge-pill.all {
+            border-color: #6ee7b7;
+            color: #a7f3d0;
+        }
+
+        .badge-pill.dias {
+            border-color: #fcd34d;
+            color: #fde68a;
+        }
+
+    .card-info-line {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: rgba(255,255,255,0.85);
+        margin-bottom: 4px;
+    }
+
+    .card-divider-overlay {
+        border: none;
+        border-top: 1px solid rgba(255,255,255,0.2);
+        margin: 10px 0;
+    }
+
+    .preco-row {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+        margin-bottom: 12px;
+    }
+
+    .preco-label {
+        font-size: 11px;
+        color: rgba(255,255,255,0.7);
+    }
+
+    .preco-valor {
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+    }
+
+    .preco-pessoa {
+        font-size: 11px;
+        color: rgba(255,255,255,0.6);
+    }
+
+    .btn-overlay {
+        width: 100%;
+        padding: 10px;
+        border-radius: 50px;
+        border: 1.5px solid rgba(255,255,255,0.45);
+        background: rgba(255,255,255,0.1);
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+        .btn-overlay:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
     /* CSS responsivo: em telas menores que 768px (celular), empilha o conteúdo verticalmente */
     @@media (max-width: 768px) {
         .hero-content {
@@ -236,30 +359,57 @@
 </section>
 
 <!-- SEÇÃO PROMOÇÕES: Cards gerados dinamicamente a partir da lista do Model -->
+<!-- SEÇÃO PROMOÇÕES -->
 <section id="promocoes" class="py-5 bg-light">
     <div class="container">
         <h2 class="section-title text-center mb-4">Promoções Imperdíveis</h2>
 
         <div class="row">
-            @* Loop Razor: percorre cada promoção da lista e gera um card para cada uma *@
             @foreach (var promo in Model)
             {
+                var dias = (int)(promo.DataVolta - promo.DataIda).TotalDays;
+
                 <div class="col-md-4 mb-4">
-                    <div class="card card-promo shadow">
-                        @* Exibe a imagem da promoção usando a URL salva no banco *@
-                        <img src="@promo.ImagemUrl" class="card-img-top" />
+                    <div class="card-promo-overlay">
 
-                        <div class="card-body">
-                            @* Exibe o título da promoção *@
-                            <h5 class="card-title">@promo.Titulo</h5>
-                            @* Exibe a descrição da promoção *@
-                            <p>@promo.Descricao</p>
+                        <img src="@promo.ImagemUrl" alt="@promo.Titulo" />
 
-                            @* Botão que chama interesse() passando o título da promoção como argumento *@
-                            <button class="btn btn-yellow w-100"
-                                    onclick="interesse('@promo.Titulo')">
-                                Tenho Interesse
+                        <div class="card-overlay-content">
+
+                            <h5>@promo.Titulo</h5>
+
+                            <div class="badges-row">
+                                @if (promo.VooDireto)
+                                {
+                                    <span class="badge-pill voo">✈ Voo direto</span>
+                                }
+                                @if (promo.AllInclusive)
+                                {
+                                    <span class="badge-pill all">All inclusive</span>
+                                }
+                                <span class="badge-pill dias">@dias dias</span>
+                            </div>
+
+                            <div class="card-info-line">
+                                📍 @promo.Destino
+                            </div>
+                            <div class="card-info-line">
+                                📅 Saída: @promo.DataIda.ToString("dd/MM/yyyy") · de @promo.Origem
+                            </div>
+
+                            <hr class="card-divider-overlay" />
+
+                            <div class="preco-row">
+                                <span class="preco-label">A partir de</span>
+                                <span class="preco-valor">@promo.Parcelas x R$ @promo.Preco.ToString("N0")</span>
+                                <span class="preco-pessoa">/ pessoa</span>
+                            </div>
+
+                            <button class="btn-overlay"
+                                    onclick="interesse('@promo.Titulo', '@promo.Destino', '@promo.DataIda.ToString("dd/MM/yyyy")')">
+                                Quero mais informações
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -267,7 +417,6 @@
         </div>
     </div>
 </section>
-
 <!-- SEÇÃO CONTATO: Exibe telefone, email e localização da empresa -->
 <section id="contato" class="py-5 text-center">
     <div class="container">
@@ -299,11 +448,23 @@
 </div>
 
 <script>
-    // Função chamada ao clicar em "Tenho Interesse" nos cards de promoção
-    function interesse(promocao) {
-        // Exibe um alerta simples informando qual promoção foi selecionada
-        alert("Interesse na promoção: " + promocao);
-    }
+        function interesse(titulo, destino, data) {
+
+            let numero = "5511998093791"; // ⚠️ coloca seu número aqui
+
+            let mensagem = `Olá! 😊
+    Gostei da promoção:
+
+    ✈️ ${titulo}
+    📍 Destino: ${destino}
+    📅 Data: ${data}
+
+    Quero mais informações!`;
+
+            let url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+
+            window.open(url, "_blank");
+        }
 </script>
 
 <!-- Botão flutuante amarelo que abre o chat ao ser clicado -->
@@ -432,6 +593,7 @@
         border-radius: 50%;
         object-fit: cover;
     }
+
 </style>
 
 <script>

@@ -1,54 +1,101 @@
 ﻿@model TK.Models.Promocao
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Promoção";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h2 class="text-center mb-4">✨ Nova Promoção</h2>
 
-<h4>Promocao</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Titulo" class="control-label"></label>
-                <input asp-for="Titulo" class="form-control" />
+<div class="d-flex justify-content-center">
+    <form asp-action="Create" enctype="multipart/form-data" style="width: 500px;">
+        @Html.AntiForgeryToken()
+
+        <div class="card p-4 shadow" style="border-radius: 20px;">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Título</label>
+                <input asp-for="Titulo" class="form-control" placeholder="Ex: Punta Cana — Voo Direto" />
                 <span asp-validation-for="Titulo" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Descrição</label>
+                <textarea asp-for="Descricao" class="form-control" rows="2" placeholder="Breve descrição da promoção"></textarea>
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Destino" class="control-label"></label>
-                <input asp-for="Destino" class="form-control" />
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Destino</label>
+                <input asp-for="Destino" class="form-control" placeholder="Ex: Punta Cana, República Dominicana" />
                 <span asp-validation-for="Destino" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ImagemUrl" class="control-label"></label>
-                <input asp-for="ImagemUrl" class="form-control" />
-                <span asp-validation-for="ImagemUrl" class="text-danger"></span>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Cidade de Saída</label>
+                <input asp-for="Origem" class="form-control" placeholder="Ex: São Paulo" />
+                <span asp-validation-for="Origem" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Ativa" /> @Html.DisplayNameFor(model => model.Ativa)
-                </label>
+
+            <div class="row">
+                <div class="col mb-3">
+                    <label class="form-label fw-bold">Data de Ida</label>
+                    <input asp-for="DataIda" type="date" class="form-control" />
+                    <span asp-validation-for="DataIda" class="text-danger"></span>
+                </div>
+                <div class="col mb-3">
+                    <label class="form-label fw-bold">Data de Volta</label>
+                    <input asp-for="DataVolta" type="date" class="form-control" />
+                    <span asp-validation-for="DataVolta" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="row">
+                <div class="col mb-3">
+                    <label class="form-label fw-bold">Parcelas</label>
+                    <input asp-for="Parcelas" type="number" class="form-control" placeholder="Ex: 12" />
+                    <span asp-validation-for="Parcelas" class="text-danger"></span>
+                </div>
+                <div class="col mb-3">
+                    <label class="form-label fw-bold">Valor da Parcela (R$)</label>
+                    <input asp-for="Preco" type="number" step="0.01" class="form-control" placeholder="Ex: 495,00" />
+                    <span asp-validation-for="Preco" class="text-danger"></span>
+                </div>
             </div>
-        </form>
-    </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Imagem da Promoção</label>
+                <input type="file" name="imagem" class="form-control" accept="image/*" />
+            </div>
+
+            <div class="mb-4 d-flex gap-4">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="VooDireto" />
+                    <label class="form-check-label">✈ Voo Direto</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="AllInclusive" />
+                    <label class="form-check-label">🍹 All Inclusive</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Ativa" />
+                    <label class="form-check-label">Promoção Ativa</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" style="border-radius: 50px; padding: 12px;">
+                💾 Salvar Promoção
+            </button>
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="text-center mt-3">
+    <a asp-action="Index">← Voltar</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

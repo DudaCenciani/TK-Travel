@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TK.Data;
 using TK.Models;
+using System.IO;
 
 namespace TK.Controllers
 {
@@ -28,17 +29,12 @@ namespace TK.Controllers
         // GET: Promocaos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var promocao = await _context.Promocao
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (promocao == null)
-            {
-                return NotFound();
-            }
+
+            if (promocao == null) return NotFound();
 
             return View(promocao);
         }
@@ -50,86 +46,88 @@ namespace TK.Controllers
         }
 
         // POST: Promocaos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Descricao,Destino,ImagemUrl,Ativa")] Promocao promocao)
+        public async Task<IActionResult> Create(Promocao promocao, IFormFile imagem)
         {
-            if (ModelState.IsValid)
+            if (imagem != null)
             {
-                _context.Add(promocao);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var nomeArquivo = Guid.NewGuid().ToString() + Path.GetExtension(imagem.FileName);
+                var caminho = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens/promocoes", nomeArquivo);
+
+                using (var stream = new FileStream(caminho, FileMode.Create))
+                {
+                    await imagem.CopyToAsync(stream);
+                }
+
+                promocao.ImagemUrl = "/imagens/promocoes/" + nomeArquivo;
             }
-            return View(promocao);
+
+            _context.Add(promocao);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Promocaos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var promocao = await _context.Promocao.FindAsync(id);
-            if (promocao == null)
-            {
-                return NotFound();
-            }
+
+            if (promocao == null) return NotFound();
+
             return View(promocao);
         }
 
         // POST: Promocaos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descricao,Destino,ImagemUrl,Ativa")] Promocao promocao)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descricao,Destino,Origem,ImagemUrl,DataIda,DataVolta,VooDireto,AllInclusive,Preco,Parcelas,Ativa")] Promocao promocao, IFormFile imagem)
         {
-            if (id != promocao.Id)
-            {
-                return NotFound();
-            }
+            if (id != promocao.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Se enviou nova imagem, substitui
+                    if (imagem != null)
+                    {
+                        var nomeArquivo = Guid.NewGuid().ToString() + Path.GetExtension(imagem.FileName);
+                        var caminho = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens/promocoes", nomeArquivo);
+
+                        using (var stream = new FileStream(caminho, FileMode.Create))
+                        {
+                            await imagem.CopyToAsync(stream);
+                        }
+
+                        promocao.ImagemUrl = "/imagens/promocoes/" + nomeArquivo;
+                    }
+
                     _context.Update(promocao);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PromocaoExists(promocao.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!PromocaoExists(promocao.Id)) return NotFound();
+                    else throw;
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(promocao);
         }
 
         // GET: Promocaos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var promocao = await _context.Promocao
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (promocao == null)
-            {
-                return NotFound();
-            }
+
+            if (promocao == null) return NotFound();
 
             return View(promocao);
         }
@@ -140,6 +138,7 @@ namespace TK.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var promocao = await _context.Promocao.FindAsync(id);
+
             if (promocao != null)
             {
                 _context.Promocao.Remove(promocao);

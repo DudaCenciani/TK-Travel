@@ -1,6 +1,10 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\Imagens\logo.png
+wwwroot\Imagens\promocoes\4539f35a-ed07-4516-9d04-a00a6494c152.png
+wwwroot\Imagens\promocoes\557fa0fd-f555-4672-97d0-21c4aace17de.png
+wwwroot\Imagens\promocoes\83f4d6cc-2e43-44fc-810f-e02d79db6cfd.png
+wwwroot\Imagens\promocoes\8fbe36e5-5c05-40ee-b52e-1e24d6f2dc14.png
 wwwroot\Imagens\teka.png
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css

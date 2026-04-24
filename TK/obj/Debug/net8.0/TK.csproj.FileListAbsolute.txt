@@ -252,3 +252,4 @@ C:\Users\cenci\Desktop\TK\TK\TK\obj\Debug\net8.0\refint\TK.dll
 C:\Users\cenci\Desktop\TK\TK\TK\obj\Debug\net8.0\TK.pdb
 C:\Users\cenci\Desktop\TK\TK\TK\obj\Debug\net8.0\TK.genruntimeconfig.cache
 C:\Users\cenci\Desktop\TK\TK\TK\obj\Debug\net8.0\ref\TK.dll
+C:\Users\cenci\Desktop\TK\TK\TK\obj\Debug\net8.0\TK.sourcelink.json

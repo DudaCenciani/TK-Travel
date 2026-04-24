@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TK.Data;
 
@@ -11,9 +12,11 @@ using TK.Data;
 namespace TK.Migrations
 {
     [DbContext(typeof(TKContext))]
-    partial class TKContextModelSnapshot : ModelSnapshot
+    [Migration("20260424115049_AddPromocaoCampos")]
+    partial class AddPromocaoCampos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,16 +85,10 @@ namespace TK.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("AllInclusive")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("Ativa")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("DataIda")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DataVolta")
+                    b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
@@ -106,22 +103,9 @@ namespace TK.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Origem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Parcelas")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Preco")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("VooDireto")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

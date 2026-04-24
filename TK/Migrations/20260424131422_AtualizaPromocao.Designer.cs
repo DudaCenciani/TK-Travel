@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TK.Data;
 
@@ -11,9 +12,11 @@ using TK.Data;
 namespace TK.Migrations
 {
     [DbContext(typeof(TKContext))]
-    partial class TKContextModelSnapshot : ModelSnapshot
+    [Migration("20260424131422_AtualizaPromocao")]
+    partial class AtualizaPromocao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,36 +91,25 @@ namespace TK.Migrations
                     b.Property<bool>("Ativa")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("DataIda")
+                    b.Property<DateTime>("DataSaida")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataVolta")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Destino")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagemUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Origem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Parcelas")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Preco")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Titulo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("VooDireto")
